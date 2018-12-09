@@ -122,27 +122,49 @@
       <!--弹框-->
       <!--查看-->
       <el-dialog title="查看页面" :visible.sync="dialogTableVisible" width="1000px">
-        <el-row class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">编号</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.classifyCode}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-dark">名称</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.classifyName}}</div></el-col>
-          <el-col :span="2"><div class="grid-content bg-purple-dark">父级</div></el-col>
-          <el-col :span="6"><div class="grid-content">{{lookPageData.parentClassifyName}}</div></el-col>
-        </el-row>
-        <el-row  class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">使用期限</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.serviceLife}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-dark">需要保养</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.isMaintenance==1?'是':'否'}}</div></el-col>
-          <el-col :span="2"><div class="grid-content bg-purple-dark"></div></el-col>
-          <el-col :span="6"><div class="grid-content"></div></el-col>
-        </el-row>
-        <el-row  class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">备注</div></el-col>
-          <el-col :span="21"><div class="grid-content">{{lookPageData.remarks}}</div></el-col>
-        </el-row>
-        <span slot="title" class="dialog-title">
+        <table>
+          <tr>
+            <td class="table-title">编号</td>
+            <td class="table-content">{{lookPageData.classifyCode}}</td>
+            <td class="table-title">名称</td>
+            <td class="table-content">{{lookPageData.classifyName}}</td>
+            <td class="table-title">父级</td>
+            <td class="table-content">{{lookPageData.parentClassifyName}}</td>
+          </tr>
+          <tr>
+            <td class="table-title">使用期限</td>
+            <td class="table-content">{{lookPageData.serviceLife}}</td>
+            <td class="table-title">需要保养</td>
+            <td class="table-content">{{lookPageData.isMaintenance==1?'是':'否'}}</td>
+            <td class="table-title"></td>
+            <td class="table-content"></td>
+          </tr>
+          <tr>
+            <td class="table-title">备注</td>
+            <td class="table-content"  colspan="5">{{lookPageData.remarks}}</td>
+          </tr>
+        </table>
+        <!--<el-row class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">编号</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.classifyCode}}</div></el-col>-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">名称</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.classifyName}}</div></el-col>-->
+          <!--<el-col :span="2"><div class="grid-content bg-purple-dark">父级</div></el-col>-->
+          <!--<el-col :span="6"><div class="grid-content">{{lookPageData.parentClassifyName}}</div></el-col>-->
+        <!--</el-row>-->
+        <!--<el-row  class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">使用期限</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.serviceLife}}</div></el-col>-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">需要保养</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.isMaintenance==1?'是':'否'}}</div></el-col>-->
+          <!--<el-col :span="2"><div class="grid-content bg-purple-dark"></div></el-col>-->
+          <!--<el-col :span="6"><div class="grid-content"></div></el-col>-->
+        <!--</el-row>-->
+        <!--<el-row  class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">备注</div></el-col>-->
+          <!--<el-col :span="21"><div class="grid-content">{{lookPageData.remarks}}</div></el-col>-->
+        <!--</el-row>-->
+        <span slot="title" class="dialog-title" style="text-align: left;color: #ffffff">
           <p class="dialog-titlebox">查看页面</p>
         </span>
         <span slot="footer" class="dialog-footer">
@@ -152,38 +174,89 @@
       </el-dialog>
       <!--增加编辑-->
       <el-dialog title="增加/编辑" :visible.sync="adddialogTableVisible" width="1000px"  >
-        <el-form ref="form"  label-width="130px" style="text-align: left"  :model="form" :rules="rules">
-          <el-form-item label="编号" prop="classifyCode" class="titletype">
-            <el-input  v-model="form.classifyCode" placeholder="请输入分类编号"></el-input>
-          </el-form-item>
-          <el-form-item label="名称" prop="classifyName" class="titlename">
-            <el-input  v-model="form.classifyName" placeholder="请输入分类名称"></el-input>
-          </el-form-item>
-          <el-form-item label="父级"  class="parentreg">
-            <el-select v-model="form.parentId" placeholder="请选择父级">
-              <el-option v-for="item in parentArr" :label="item.classifyName" :value="item.id">{{item.classifyName}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="使用期限(月)" prop="serviceLife" class="timereg">
-            <el-input  v-model="serviceLife" type="number" placeholder="请输入使用期限"></el-input>
-          </el-form-item>
-          <el-form-item label="残值率(%)" prop="residualRatio" class="residualreg">
-            <el-input  v-model="residualRatio" type="number" placeholder="请输入残值率"></el-input>
-          </el-form-item>
-          <el-form-item label="需要保养">
-            <el-radio-group v-model="form.isMaintenance" required>
-              <el-radio label="1" value="1">是</el-radio>
-              <el-radio label="0" value="0">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="备注" class="markreg">
-            <el-input type="textarea" v-model="form.remarks" placeholder="请输入备注"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">添加</el-button>
-            <el-button @click="adddialogTableVisible=false">取消</el-button>
-          </el-form-item>
-        </el-form>
+        <table>
+          <tr>
+            <td class="table-title  must-title">编号</td>
+            <td class="table-content">
+              <el-input  v-model="form.classifyCode" placeholder="请输入分类编号"></el-input>
+            </td>
+            <td class="table-title  must-title">名称</td>
+            <td class="table-content parentreg">
+              <el-input  v-model="form.classifyName" placeholder="请输入分类名称"></el-input>
+            </td>
+            <td class="table-title  must-title">父级</td>
+            <td class="table-content">
+              <el-select v-model="form.parentId" placeholder="请选择父级">
+                <el-option v-for="item in parentArr" :label="item.classifyName" :value="item.id">{{item.classifyName}}</el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td class="table-title  must-title">使用期限(月)</td>
+            <td class="table-content timereg">
+              <el-input  v-model="serviceLife" type="number" placeholder="请输入使用期限" min="0"></el-input>
+
+            </td>
+            <td class="table-title  must-title">残值率(%)</td>
+            <td class="table-content residualreg">
+              <el-input  v-model="residualRatio" type="number" placeholder="请输入残值率" min="0"></el-input>
+
+            </td>
+            <td class="table-title  must-title">需要保养</td>
+            <td class="table-content">
+              <el-radio-group v-model="form.isMaintenance" required>
+                <el-radio label="1" value="1">是</el-radio>
+                <el-radio label="0" value="0">否</el-radio>
+              </el-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td class="table-title">备注</td>
+            <td class="table-content"  colspan="5">
+              <el-input type="textarea" v-model="form.remarks" placeholder="请输入备注"></el-input>
+
+            </td>
+          </tr>
+        </table>
+        <span slot="title" class="dialog-title" style="text-align: left;color: #ffffff">
+          <p class="dialog-titlebox">新增/编辑</p>
+        </span>
+        <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onSubmit">添加</el-button>
+          <el-button @click="adddialogTableVisible=false">取消</el-button>
+      </span>
+        <!--<el-form ref="form"  label-width="130px" style="text-align: left"  :model="form" :rules="rules">-->
+          <!--<el-form-item label="编号" prop="classifyCode" class="titletype">-->
+            <!--<el-input  v-model="form.classifyCode" placeholder="请输入分类编号"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="名称" prop="classifyName" class="titlename">-->
+            <!--<el-input  v-model="form.classifyName" placeholder="请输入分类名称"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="父级"  class="parentreg">-->
+            <!--<el-select v-model="form.parentId" placeholder="请选择父级">-->
+              <!--<el-option v-for="item in parentArr" :label="item.classifyName" :value="item.id">{{item.classifyName}}</el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="使用期限(月)" prop="serviceLife" class="timereg">-->
+            <!--<el-input  v-model="serviceLife" type="number" placeholder="请输入使用期限"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="残值率(%)" prop="residualRatio" class="residualreg">-->
+            <!--<el-input  v-model="residualRatio" type="number" placeholder="请输入残值率"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="需要保养">-->
+            <!--<el-radio-group v-model="form.isMaintenance" required>-->
+              <!--<el-radio label="1" value="1">是</el-radio>-->
+              <!--<el-radio label="0" value="0">否</el-radio>-->
+            <!--</el-radio-group>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="备注" class="markreg">-->
+            <!--<el-input type="textarea" v-model="form.remarks" placeholder="请输入备注"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item>-->
+            <!--<el-button type="primary" @click="onSubmit">添加</el-button>-->
+            <!--<el-button @click="adddialogTableVisible=false">取消</el-button>-->
+          <!--</el-form-item>-->
+        <!--</el-form>-->
       </el-dialog>
 
     </div>
@@ -194,6 +267,7 @@
         name: "ClassifyManage",
         data:function () {
           return{
+            uersdata:'',
             listData:[],
             lookData:[],
             dialogTableVisible:false,
@@ -379,12 +453,16 @@
               vm.$message.error('资产使用年限不能为空')
               document.querySelector('.timereg').className = 'is-error timereg el-form-item  is-required'
               return
+            }else if(vm.form.serviceLife*1<0){
+              vm.$message.error('资产使用年限不能小于0')
+              document.querySelector('.timereg').className = 'is-error timereg el-form-item  is-required'
+              return
             }
             if(!vm.form.residualRatio){
               vm.$message.error('资产残值率不能为空')
               document.querySelector('.residualreg').className = 'is-error residualreg el-form-item  is-required'
               return
-            }else if(vm.form.residualRatio*1>100 || vm.form.residualRatio*1==100){
+            }else if(vm.form.residualRatio*1>100 || vm.form.residualRatio*1==100 || vm.form.residualRatio*1<0){
               vm.$message.error('资产残值率需输入0-100之间数字')
               document.querySelector('.residualreg').className = 'is-error residualreg el-form-item  is-required'
               return
@@ -482,12 +560,32 @@
 </script>
 
 <style scoped lang="scss">
+
 .classifymanage{
   background-color: #fff;
   padding: 0  20px 20px 20px;
   height: 100% ;
   .table{
     font-size: 14px;
+  }
+  table{
+    width: 100%;
+    border-collapse:collapse;
+    font-size: 14px;
+    td{
+      border: 1px solid #e4e4e4;
+      padding: 6px 0;
+    }
+    .table-title{
+      background: #f2f2f2;
+      width: 130px;
+    }
+    .table-content{
+      background: #fff;
+      text-align: left;
+      padding-left: 10px;
+      width: 220px;
+    }
   }
   .btn{
     cursor: pointer;

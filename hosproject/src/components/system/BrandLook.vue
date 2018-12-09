@@ -29,6 +29,9 @@
               prop="brandCode"
               align="center"
               label="编号">
+              <template slot-scope="scope">
+                <span @click="LookPage(scope.row)" class="classifycode">{{scope.row.brandCode}}</span>
+              </template>
             </el-table-column>
             <el-table-column
               prop="brandName"
@@ -79,63 +82,117 @@
       <!--弹框-->
       <!--查看-->
       <el-dialog title="查看页面" :visible.sync="dialogTableVisible" width="1000px">
-        <el-row class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">编号</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.classifyCode}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-dark">名称</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.classifyName}}</div></el-col>
-          <el-col :span="2"><div class="grid-content bg-purple-dark">父级</div></el-col>
-          <el-col :span="6"><div class="grid-content">{{lookPageData.parentId}}</div></el-col>
-        </el-row>
-        <el-row  class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">使用期限</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.serviceLife}}</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-dark">需要保养</div></el-col>
-          <el-col :span="5"><div class="grid-content">{{lookPageData.isMaintenance==1?'是':'否'}}</div></el-col>
-          <el-col :span="2"><div class="grid-content bg-purple-dark"></div></el-col>
-          <el-col :span="6"><div class="grid-content"></div></el-col>
-        </el-row>
-        <el-row  class="list">
-          <el-col :span="3"><div class="grid-content bg-purple-dark">备注</div></el-col>
-          <el-col :span="21"><div class="grid-content">{{lookPageData.remarks}}</div></el-col>
-        </el-row>
-        <span slot="title" class="dialog-title">
+        <table>
+          <tr>
+            <td class="table-title">编号</td>
+            <td class="table-content">{{lookPageData.brandCode}}</td>
+            <td class="table-title">名称</td>
+            <td class="table-content">{{lookPageData.brandName}}</td>
+            <td class="table-title">父级</td>
+            <td class="table-content">{{lookPageData.classifyName}}</td>
+          </tr>
+          <tr>
+            <td class="table-title">使用期限</td>
+            <td class="table-content">{{lookPageData.serviceLife}}</td>
+            <td class="table-title">需要保养</td>
+            <td class="table-content">{{lookPageData.isMaintenance==1?'是':'否'}}</td>
+            <td class="table-title"></td>
+            <td class="table-content"></td>
+          </tr>
+          <tr>
+            <td class="table-title">备注</td>
+            <td class="table-content"  colspan="5">{{lookPageData.remarks}}</td>
+          </tr>
+        </table>
+        <!--<el-row class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">编号</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.classifyCode}}</div></el-col>-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">名称</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.classifyName}}</div></el-col>-->
+          <!--<el-col :span="2"><div class="grid-content bg-purple-dark">父级</div></el-col>-->
+          <!--<el-col :span="6"><div class="grid-content">{{lookPageData.parentId}}</div></el-col>-->
+        <!--</el-row>-->
+        <!--<el-row  class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">使用期限</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.serviceLife}}</div></el-col>-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">需要保养</div></el-col>-->
+          <!--<el-col :span="5"><div class="grid-content">{{lookPageData.isMaintenance==1?'是':'否'}}</div></el-col>-->
+          <!--<el-col :span="2"><div class="grid-content bg-purple-dark"></div></el-col>-->
+          <!--<el-col :span="6"><div class="grid-content"></div></el-col>-->
+        <!--</el-row>-->
+        <!--<el-row  class="list">-->
+          <!--<el-col :span="3"><div class="grid-content bg-purple-dark">备注</div></el-col>-->
+          <!--<el-col :span="21"><div class="grid-content">{{lookPageData.remarks}}</div></el-col>-->
+        <!--</el-row>-->
+        <span slot="title" class="dialog-title" style="text-align: left;color: #ffffff">
           <p class="dialog-titlebox">查看页面</p>
         </span>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogTableVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogTableVisible = false">编辑</el-button>
+        <el-button type="primary" @click="lookEditInfo">编辑</el-button>
       </span>
       </el-dialog>
       <!--增加编辑-->
       <el-dialog title="增加/编辑" :visible.sync="adddialogTableVisible" width="1000px" >
-        <el-form ref="form" :model="form" label-width="130px"   :rules="rules" style="text-align: left">
-          <!--<el-form-item label="排序" prop="classifyCode" required>-->
-            <!--<el-input v-model="form.sort"></el-input>-->
+        <table>
+          <tr>
+            <td class="table-title">编码</td>
+            <td class="table-content">{{form.brandCode}}</td>
+            <td class="table-title">名称</td>
+            <td class="table-content">{{form.brandName}}</td>
+            <td class="table-title">使用期限(月)</td>
+            <td class="table-content">{{serviceLife}}</td>
+          </tr>
+          <tr>
+            <td class="table-title">残值率(%)</td>
+            <td class="table-content">{{residualRatio}}</td>
+            <td class="table-title">需要保养</td>
+            <td class="table-content">
+              <el-radio-group v-model="form.isMaintenance">-->
+                <el-radio label="1" value="1">是</el-radio>
+                <el-radio label="0" value="0">否</el-radio>
+              </el-radio-group>
+
+            </td>
+            <td class="table-title"></td>
+            <td class="table-content"></td>
+          </tr>
+          <tr>
+            <td class="table-title">备注</td>
+            <td class="table-content"  colspan="5">{{form.remarks}}</td>
+          </tr>
+        </table>
+        <span slot="title" class="dialog-title" style="text-align: left;color: #ffffff">
+          <p class="dialog-titlebox">新增/编辑</p>
+        </span>
+        <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onSubmit">添加</el-button>
+          <el-button @click="adddialogTableVisible=false">取消</el-button>
+        </span>
+        <!--<el-form ref="form" :model="form" label-width="130px"   :rules="rules" style="text-align: left">-->
+          <!--<el-form-item label="编码" prop="brandCode" class="titletype" >-->
+            <!--<el-input  v-model="form.brandCode" placeholder="请输入分类编码"></el-input>-->
           <!--</el-form-item>-->
-          <el-form-item label="编码" prop="brandCode" class="titletype" >
-            <el-input  v-model="form.brandCode" placeholder="请输入分类编码"></el-input>
-          </el-form-item>
-          <el-form-item label="名称" prop="brandName" class="titlename">
-            <el-input  v-model="form.brandName" placeholder="请输入分类名称"></el-input>
-          </el-form-item>
-          <el-form-item label="使用期限(月)" prop="serviceLife" class="timereg">
-            <el-input  v-model="serviceLife" type="number" placeholder="请输入使用期限"></el-input>
-          </el-form-item>
-          <el-form-item label="残值率(%)" prop="residualRatio" class="residualreg">
-            <el-input  v-model="residualRatio" type="number" placeholder="请输入残值率"></el-input>
-          </el-form-item>
-          <el-form-item label="需要保养">
-            <el-radio-group v-model="form.isMaintenance">
-              <el-radio label="1" value="1">是</el-radio>
-              <el-radio label="0" value="0">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">添加</el-button>
-            <el-button @click="adddialogTableVisible=false">取消</el-button>
-          </el-form-item>
-        </el-form>
+          <!--<el-form-item label="名称" prop="brandName" class="titlename">-->
+            <!--<el-input  v-model="form.brandName" placeholder="请输入分类名称"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="使用期限(月)" prop="serviceLife" class="timereg">-->
+            <!--<el-input  v-model="serviceLife" type="number" placeholder="请输入使用期限"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="残值率(%)" prop="residualRatio" class="residualreg">-->
+            <!--<el-input  v-model="residualRatio" type="number" placeholder="请输入残值率"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="需要保养">-->
+            <!--<el-radio-group v-model="form.isMaintenance">-->
+              <!--<el-radio label="1" value="1">是</el-radio>-->
+              <!--<el-radio label="0" value="0">否</el-radio>-->
+            <!--</el-radio-group>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item>-->
+            <!--<el-button type="primary" @click="onSubmit">添加</el-button>-->
+            <!--<el-button @click="adddialogTableVisible=false">取消</el-button>-->
+          <!--</el-form-item>-->
+        <!--</el-form>-->
       </el-dialog>
     </div>
 </template>
@@ -160,7 +217,8 @@
               brandName:'',
               serviceLife:'',
               residualRatio:'',
-              isMaintenance:'1'
+              isMaintenance:'1',
+              Remarks:''
             },
             total:0,
             currentPage:1,
@@ -216,9 +274,44 @@
           this.lookInfo(vm.$route.params.id)
         },
         methods:{
+          lookEditInfo(){
+            let vm =this
+            this.dialogTableVisible=false
+            this.addEditId = this.lookPageData.id
+            var item = this.lookPageData
+            this.adddialogTableVisible=true
+            this.form={
+              brandCode:item.brandCode,
+              brandName:item.brandName,
+              // parentId:item.parentId,
+              serviceLife:item.serviceLife,
+              isMaintenance:item.isMaintenance+'',
+              remarks:item.remarks,
+              residualRatio:item.residualRatio
+            }
+            this.serviceLife=item.serviceLife
+            this.residualRatio=item.residualRatio
+
+          },
           changePage(num){
             this.currentPage = num
             this.lookInfo(vm.$route.params.id)
+          },
+          //查看页面
+          LookPage(item){
+            let vm =this
+            vm.$http.post('assetsBrand/view',{
+              Id:item.id
+            }).then(res=>{
+              if(res.code=='200'){
+                vm.lookPageData = res.data[0]
+                this.dialogTableVisible=true
+
+              }
+            })
+            // this.lookPageData = id
+            // // this.lookInfo(id)
+            // this.dialogTableVisible=true
           },
           handleEdit(item){
             this.addEditId = item.id
@@ -298,13 +391,17 @@
               vm.$message.error('资产使用年限不能为空')
               document.querySelector('.timereg').className = 'is-error timereg el-form-item  is-required'
               return
+            }else if(vm.form.serviceLife*1<0){
+              vm.$message.error('资产使用年限不能小于0')
+              document.querySelector('.timereg').className = 'is-error timereg el-form-item  is-required'
+              return
             }
             if(!vm.form.residualRatio){
               vm.$message.error('资产残值率不能为空')
               document.querySelector('.residualreg').className = 'is-error residualreg el-form-item  is-required'
               return
-            }else if(vm.form.residualRatio*1>100 || vm.form.residualRatio*1==100){
-              vm.$message.error('资产残值率需小于100')
+            }else if(vm.form.residualRatio*1>100 || vm.form.residualRatio*1==100 || vm.form.residualRatio*1<0){
+              vm.$message.error('资产残值率为0-100之间数字')
               document.querySelector('.residualreg').className = 'is-error residualreg el-form-item  is-required'
 
               return
@@ -341,6 +438,25 @@
   .brandlook{
     .table{
       font-size: 14px;
+    }
+    table{
+      width: 100%;
+      border-collapse:collapse;
+      font-size: 14px;
+      td{
+        border: 1px solid #e4e4e4;
+        padding: 6px 0;
+      }
+      .table-title{
+        background: #f2f2f2;
+        width: 130px;
+      }
+      .table-content{
+        background: #fff;
+        text-align: left;
+        padding-left: 10px;
+        width: 220px;
+      }
     }
     .btn{
       cursor: pointer;

@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="login" style="background: url('../../../static/images/bg.png') no-repeat;background-size: 100% 100%">
       <div class="logobox">
         <img src="../../../static/images/titlelogo.png" alt="">
       </div>
@@ -16,7 +16,7 @@
 
         <div class="item">
           <p class="label">密码</p>
-          <el-input type="password" class="passreg" v-model="password" placeholder="请输入密码"></el-input>
+          <el-input type="password" class="passreg" v-model="password" placeholder="请输入密码" @keyup.enter.native="onSubmit"></el-input>
         </div>
         <p class="regtitle" v-if="title">{{title}}</p>
         <div class="item" style="margin-top: 60px">
@@ -48,6 +48,9 @@
           }
         },
         methods:{
+          onSubmit(){
+            this.loginClick()
+          },
           loginClick(){
             var vm =this
             if(!vm.userName){
@@ -145,8 +148,8 @@
 .login{
   /*width: 100%;*/
   height: 100%;
-  background: url("/static/images/bg.png") no-repeat;
-  background-size: 100% 100%;
+  /*background: url("/static/images/bg.png") no-repeat;*/
+  /*background-size: 100% 100%;*/
   background-color: #3267bf;
   position: relative;
   min-width: 1300px;

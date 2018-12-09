@@ -70,12 +70,12 @@
                     <td class="table-content">{{uersdata.source}}</td>
                   </tr>
                   <tr>
+                    <td class="table-title">资产用途</td>
+                    <td class="table-content">{{uersdata.assrtsUse}}</td>
+                    <td class="table-title">额定功率(KW)</td>
+                    <td class="table-content">{{uersdata.ratedPower}}</td>
                     <td class="table-title">折旧后金额</td>
                     <td class="table-content">{{uersdata.residualValue}}</td>
-                    <td class="table-title"></td>
-                    <td class="table-content"></td>
-                    <td class="table-title"></td>
-                    <td class="table-content"></td>
                   </tr>
                   <tr>
                     <td class="table-title">备注</td>

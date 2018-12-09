@@ -5,8 +5,8 @@
       </div>
         <div class="banner">
           <div class="bannerleft">
-            <el-button @click="open" type="warning" plain>还原</el-button>
-            <el-button type="warning" plain>导出</el-button>
+            <el-button @click="open" type="warning" plain :disabled="multipleSelection?false:true">还原</el-button>
+            <el-button type="warning" plain @click="exportHandle">导出</el-button>
           </div>
           <div class="bannerright">
             <el-button @click="filter = !filter">检索</el-button>
@@ -335,6 +335,44 @@ export default {
       this.requestAdminInfo()
     },
     methods:{
+      exportHandle() {
+        let vm = this
+        let _idarr = []
+        vm.selectData.forEach(function (item) {
+          _idarr.push(item.id)
+        })
+
+        let params = {
+          ids: _idarr.join(','),
+          assetsCode: vm.assetsCode,
+          assetsName: vm.assetsName,
+          assetsTypeId: vm.assetsTypeId,
+          batchNumber: vm.batchNumber,
+          model: vm.model,
+          brandName: vm.brandName,
+          snNumber: vm.snNumber,
+          useDepartmentCode: vm.useDepartmentCode,
+          usePersonName: vm.usePersonName,
+          adminId: vm.adminId,
+          beginBuyDate: vm.dataarr[0],
+          endBuyDate: vm.dataarr[1],
+          status: vm.status,
+        }
+        var obj = JSON.parse(localStorage.getItem('LOGINDATA'))
+        params.unitCode = obj.unitCode
+        params.hospitalCode = obj.hospitalCode
+        params.userId = obj.id
+        params.userName = obj.name
+        params.roleCode = obj.roleCode
+        let param = __PATH.COMMONPATH+'assetsInfo/export?'
+        for(let i in params){
+          param += (i +'='+(params[i]||'')+'&')
+        }
+        let  link = document.createElement('a')
+        link.style.display='none'
+        link.href =param
+        link.click()
+      },
       //显示下拉框 请求资产设备品牌
       showbrandName(){
         if(!this.assetsTypeId){
@@ -481,13 +519,14 @@ export default {
           this.assetsTypeId=''
           this.brandName=''
           this.assetsName=''
+          this.brandList=[]
           var data={
             unitCode:'BJSCSYGJ',
             hospitalCode:'ZXYSHJ',
             userId:'4a00ebaa0219423daa55e07046f2edf9',
             userName:'张鹏',
             roleCode:'corpAdmin,default',
-            pageSize:10,
+            pageSize:vm.pagevulue,
             currentPage:1
           }
           var url='/scrapRecord/listData';
@@ -535,6 +574,10 @@ export default {
           })
         },
         open:function(){
+          let vm =this
+          if(!vm.multipleSelection){
+            return
+          }
           this.$alert('确定要还原此资产吗？', '还原资产', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
